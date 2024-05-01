@@ -3,11 +3,11 @@
  * NOTICE: Downloading and using this software and code anywhere without the explicit permission of IMRANDK is strictly prohibited and illegal.
  */
 
-// Function to click a button periodically
-function clickButtonPeriodically(callback) {
+function clickButtonPeriodically() {
   const button = document.getElementById('ZQvTCDIoXyggqlOiDvupbb');
+  const modal = document.getElementById('mantine-Rdbm-body');
 
-  if (button) {
+  if (button && !modal) {
     // Check if the button has a click method
     if (typeof button.click === 'function') {
       button.click();
@@ -18,31 +18,22 @@ function clickButtonPeriodically(callback) {
     }
 
     // Wait for 5 seconds before clicking again
-    setTimeout(() => {
-      callback(); // Signal that this code segment is done
-    }, 5000);
+    setTimeout(clickButtonPeriodically, 5000);
   } else {
-    // If the button is not found, retry after 5 seconds
-    setTimeout(() => {
-      clickButtonPeriodically(callback); // Retry
-    }, 5000);
+    // If the button is not found or modal is present, retry after 5 seconds
+    setTimeout(clickButtonPeriodically, 5000);
   }
-
-  // Check for the presence of the specific div element
-  const checkDivInterval = setInterval(() => {
-    const divElement = document.getElementById('mantine-Rdbm-body');
-    if (divElement) {
-      clearInterval(checkDivInterval); // Stop the periodic checking
-    }
-  }, 1000);
 }
+
+// Start the process
+clickButtonPeriodically();
 
 // Function to continuously search for a button element until found and click it
 function searchAndClickButton(selector, callback) {
   const interval = setInterval(() => {
     const button = document.querySelector(selector);
     
-    if (button) {
+    if (button) { // Check if button exists
       button.click();
       clearInterval(interval);
       callback(); // Signal that this code segment is done
@@ -96,7 +87,6 @@ function searchAndClickButtonWithSVG(svgSelector, callback) {
 
 // Define the order in which the code segments will be executed
 const codeSegments = [
-  () => clickButtonPeriodically(segmentDone),
   () => searchAndClickButton('.mantine-UnstyledButton-root.mantine-Button-root.mantine-1vxfzrq', segmentDone),
   () => searchAndClickButton('.mantine-UnstyledButton-root.mantine-Button-root.mantine-fqua6i', segmentDone),
   () => checkElement('.mantine-Text-root.mantine-jeknur', 'Enhancer', segmentDone),
@@ -111,7 +101,8 @@ function segmentDone() {
   if (currentSegmentIndex >= codeSegments.length) {
     currentSegmentIndex = 0; // Reset to the beginning
   }
-  codeSegments[currentSegmentIndex](); // Execute the next code segment
+  // Execute the next code segment
+  codeSegments[currentSegmentIndex]();
 }
 
 // Start executing the first code segment
